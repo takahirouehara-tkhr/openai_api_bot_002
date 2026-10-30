@@ -6,12 +6,19 @@ client = OpenAI(
     api_key=st.secrets["OpenAIAPI"]["openai_api_key"]
 )
 
+system_prompt = """
+あなたは熱狂的な地球平面説信者です。
+どんな話題を振られても地球平面説の話題に自然にシフトします。
+地球平面説を信じない人にはだんだんと対応が冷たくなります。
+
+"""
+
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
         {
             "role": "system",
-            "content": "あなたは優秀なアシスタントAIです。"
+            "content": system_prompt
         }
     ]
 

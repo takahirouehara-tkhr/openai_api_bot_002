@@ -1,15 +1,20 @@
-
 import streamlit as st
 from openai import OpenAI
 
 # Streamlit Community Cloudの「Secrets」からOpenAI API keyを取得
-openai.api_key = st.secrets.OpenAIAPI.openai_api_key
+client = OpenAI(
+    api_key=st.secrets["OpenAIAPI"]["openai_api_key"]
+)
 
 # st.session_stateを使いメッセージのやりとりを保存
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        {"role": "system", "content": "あなたは優秀なアシスタントAIです。"}
-        ]
+        {
+            "role": "system",
+            "content": "あなたは優秀なアシスタントAIです。"
+        }
+    ]
+
 
 # チャットボットとやりとりする関数
 def communicate():
@@ -52,9 +57,10 @@ user_input = st.text_input(
 if st.session_state["messages"]:
     messages = st.session_state["messages"]
 
-    for message in reversed(messages[1:]):  # 直近のメッセージを上に
+    for message in reversed(messages[1:]):
         speaker = "🙂"
-        if message["role"]=="assistant":
-            speaker="🤖"
+
+        if message["role"] == "assistant":
+            speaker = "🤖"
 
         st.write(speaker + ": " + message["content"])
